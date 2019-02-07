@@ -24,9 +24,15 @@ var AMLTranslator = (function () {
 			//get the element two down
 			var elementAfterNext = amlArray[index+2];
 
+			if(amlDict[element] === 'openingElement'){
+				output.push(amlToHtml(nextElement, elementAfterNext));
+			}
+			else if(!amlDict[element] || !amlDict[amlArray[index-1]]) {
+				output.push(element);
+			}
+			
 		});
-		
-		return input;
+		return output.join('');
 	};
 
 	// This function will be used for translating aml to html
@@ -37,23 +43,25 @@ var AMLTranslator = (function () {
 			var closingElement = amlDict[elementAfterNext];
 			var top = elementStack[0];
 			var index = elementStack.indexOf(closingElement);
+			var output;
 
 			// then check the stack to see if the element is closing an already open one
 			if(elementStack.includes(closingElement)){
 				// if it is close the current element and open the new one 
-				elementStack.splice(index, 1);
-				return `</${top}></${closingElement}><${top}>`;
+			
+				output =  `</${top}></${closingElement}><${top}>`;
 			}
 			// otherwise just close it without opening a new one
 			else {
-				elementStack.splice(index, 1);
-				return `</${closingElement}>`;
+				output = `</${closingElement}>`;
 			}
 		}
 		else {
 			elementStack.unshift(amlDict[nextElement]);
-			return `<${amlDict[nextElement]}>`;
+			output = `<${amlDict[nextElement]}>`;
 		}
+
+		return output;
 	}
 
 	return { "translate": translate };
