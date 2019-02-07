@@ -27,6 +27,7 @@ var AMLTranslator = (function () {
 			if(amlDict[element] === 'openingElement'){
 				output.push(amlToHtml(nextElement, elementAfterNext));
 			}
+			//check if the key exists and check if the character is should be escaped
 			else if(!amlDict[element] || !amlDict[amlArray[index-1]]) {
 				output.push(element);
 			}
@@ -55,9 +56,11 @@ var AMLTranslator = (function () {
 				output = `</${closingElement}>`;
 			}
 
+			//remove it from the stack
 			elementStack.splice(index, 1);
 		}
 		else {
+			// push to the top of the stack
 			elementStack.unshift(amlDict[nextElement]);
 			output = `<${amlDict[nextElement]}>`;
 		}
