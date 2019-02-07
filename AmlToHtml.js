@@ -46,15 +46,16 @@ var AMLTranslator = (function () {
 			var output;
 
 			// then check the stack to see if the element is closing an already open one
-			if(elementStack.includes(closingElement)){
+			if(elementStack.includes(closingElement) && closingElement !== top){
 				// if it is close the current element and open the new one 
-			
 				output =  `</${top}></${closingElement}><${top}>`;
 			}
 			// otherwise just close it without opening a new one
 			else {
 				output = `</${closingElement}>`;
 			}
+
+			elementStack.splice(index, 1);
 		}
 		else {
 			elementStack.unshift(amlDict[nextElement]);
