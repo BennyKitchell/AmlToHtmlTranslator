@@ -1,5 +1,11 @@
 var AMLTranslator = (function () {
 	
+	var translate = function(input) {
+
+		return input;
+	};
+
+	return { "translate": translate };
 }());
 
 
